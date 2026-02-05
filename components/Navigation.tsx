@@ -45,11 +45,11 @@ const Navigation: React.FC<NavigationProps> = ({
   return (
     <nav className="sticky top-0 z-[999] bg-slate-900 text-white shadow-xl print:hidden">
       
-      {/* Compacte bovenbalk */}
-      <div className="flex items-center justify-between px-4 py-0.5 border-b-2 border-slate-950">
+      {/* Extra compacte bovenbalk */}
+      <div className="flex items-center justify-between px-4 py-0 border-b-2 border-slate-950">
         <button 
           onClick={onExit}
-          className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded-xl border-2 border-slate-600 font-black transition-all active:scale-95 text-yellow-400 group cursor-pointer"
+          className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 px-3 py-0.5 rounded-xl border-2 border-slate-600 font-black transition-all active:scale-95 text-yellow-400 group cursor-pointer"
         >
           <ChevronLeft size={16} />
           <span className="text-base uppercase tracking-wider">Menu</span>
@@ -59,13 +59,13 @@ const Navigation: React.FC<NavigationProps> = ({
           {title || "Kaartavond"}
         </h1>
 
-        <div className="flex items-center justify-center w-9 h-7">
+        <div className="flex items-center justify-center w-9 h-6">
           {getSyncIcon()}
         </div>
       </div>
 
-      {/* Tabs met afgeronde hoeken en zwarte scheiding */}
-      <div className="flex bg-slate-800 overflow-x-auto no-scrollbar px-2 py-1 gap-1">
+      {/* Tabs */}
+      <div className="flex bg-slate-800 overflow-x-auto no-scrollbar px-2 py-0.5 gap-1">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const locked = isLocked(tab.id);
@@ -76,7 +76,7 @@ const Navigation: React.FC<NavigationProps> = ({
               key={tab.id}
               disabled={locked}
               onClick={() => onTabChange(tab.id)}
-              className={`flex-1 min-w-[120px] py-2.5 flex flex-col items-center gap-1 border-b-4 rounded-xl border-black transition-all ${
+              className={`flex-1 min-w-[120px] py-2 flex flex-col items-center gap-1 border-b-4 rounded-xl border-black transition-all ${
                 active 
                   ? 'border-yellow-400 bg-blue-600 text-white'
                   : locked 
