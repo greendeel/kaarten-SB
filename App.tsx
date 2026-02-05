@@ -4,6 +4,7 @@ import DashboardView from './components/DashboardView';
 import RegistrationView from './components/RegistrationView';
 import TableAssignmentView from './components/TableAssignmentView';
 import RoundView from './components/RoundView';
+import ResultsView from './components/ResultsView';
 import Navigation from './components/Navigation';
 import LoginView from './components/LoginView';
 import { getEvents, saveEvent, deleteEvent as deleteEventFromDB, generateId } from './services/storage';
@@ -29,6 +30,7 @@ const App: React.FC = () => {
       .channel('events-realtime')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'events' }, () => loadEvents())
       .subscribe();
+
     return () => { supabase.removeChannel(channel); };
   }, []);
 
@@ -152,7 +154,6 @@ const App: React.FC = () => {
         />
       )}
 
-      {/* RONDE 1 */}
       {activeTab === 'ROUND1' && activeEvent?.rounds[0]?.tables.length === 0 && (
         <TableAssignmentView
           participants={activeEvent.participants}
@@ -177,7 +178,6 @@ const App: React.FC = () => {
         />
       )}
 
-      {/* RONDE 2 */}
       {activeTab === 'ROUND2' && activeEvent?.rounds[1]?.tables.length === 0 && (
         <TableAssignmentView
           participants={activeEvent.participants}
@@ -199,6 +199,15 @@ const App: React.FC = () => {
           isScoring={isScoring}
           setIsScoring={setIsScoring}
           isEventFinished={false}
+        />
+      )}
+
+      {activeTab === 'RESULTS' && activeEvent && (
+        <ResultsView
+          participants={activeEvent.participants}
+          rounds={activeEvent.rounds}
+          title={activeEvent.title}
+          onClose={() => setActiveEventId(null)}
         />
       )}
     </div>
