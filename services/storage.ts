@@ -1,6 +1,10 @@
 import { supabase } from './supabaseClient'
 import { CardEvent } from '../types'
 
+export function generateId(): string {
+  return crypto.randomUUID();
+}
+
 /* ================= EVENTS ================= */
 
 export async function getEvents(): Promise<CardEvent[]> {
