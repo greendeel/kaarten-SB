@@ -65,29 +65,37 @@ const App: React.FC = () => {
     await updateEvent({ ...activeEvent, participants: activeEvent.participants.filter(p => p.id !== id) });
   };
 
-  const startRound = async () => {
+  const startRound1 = async () => {
     if (!activeEvent) return;
     await updateEvent({ ...activeEvent, status: EventStatus.ROUND1, rounds: [{ number: 1, tables: [], scores: {} }] });
     setActiveTab('ROUND1');
   };
 
-  const setRoundTables = async (tables: Table[]) => {
+  const startRound2 = async () => {
+    if (!activeEvent) return;
+    const updatedRounds = [...activeEvent.rounds, { number: 2, tables: [], scores: {} }];
+    await updateEvent({ ...activeEvent, status: EventStatus.ROUND2, rounds: updatedRounds });
+    setActiveTab('ROUND2');
+    setIsScoring(false);
+  };
+
+  const setRoundTables = async (roundIndex: number, tables: Table[]) => {
     if (!activeEvent) return;
     const updatedRounds = [...activeEvent.rounds];
-    updatedRounds[0] = { ...updatedRounds[0], tables };
+    updatedRounds[roundIndex] = { ...updatedRounds[roundIndex], tables };
     await updateEvent({ ...activeEvent, rounds: updatedRounds });
   };
 
-  const updateScore = async (pid: string, score: number) => {
+  const updateScore = async (roundIndex: number, pid: string, score: number) => {
     if (!activeEvent) return;
     const updatedRounds = [...activeEvent.rounds];
-    const currentRound = { ...updatedRounds[0] };
+    const currentRound = { ...updatedRounds[roundIndex] };
     currentRound.scores = { ...currentRound.scores, [pid]: score };
-    updatedRounds[0] = currentRound;
+    updatedRounds[roundIndex] = currentRound;
     await updateEvent({ ...activeEvent, rounds: updatedRounds });
   };
 
-  const finishRound = async () => {
+  const finishEvent = async () => {
     if (!activeEvent) return;
     await updateEvent({ ...activeEvent, status: EventStatus.RESULTS });
     setActiveTab('RESULTS');
@@ -139,32 +147,58 @@ const App: React.FC = () => {
           onAddParticipant={addParticipant}
           onRemoveParticipant={removeParticipant}
           onUpdateParticipantGame={() => {}}
-          onStartRound={startRound}
+          onStartRound={startRound1}
           isLocked={false}
         />
       )}
 
-      {activeTab === 'ROUND1' && activeEvent && activeEvent.rounds.length > 0 && activeEvent.rounds[0].tables.length === 0 && (
+      {/* RONDE 1 */}
+      {activeTab === 'ROUND1' && activeEvent?.rounds[0]?.tables.length === 0 && (
         <TableAssignmentView
           participants={activeEvent.participants}
           initialTables={[]}
-          onConfirm={setRoundTables}
+          onConfirm={(tables) => setRoundTables(0, tables)}
           onUpdateParticipantGame={() => {}}
           roundNumber={1}
         />
       )}
 
-      {activeTab === 'ROUND1' && activeEvent && activeEvent.rounds.length > 0 && activeEvent.rounds[0].tables.length > 0 && (
+      {activeTab === 'ROUND1' && activeEvent?.rounds[0]?.tables.length > 0 && (
         <RoundView
           round={activeEvent.rounds[0]}
           participants={activeEvent.participants}
-          onScoreChange={updateScore}
-          onFinishRound={finishRound}
+          onScoreChange={(pid, score) => updateScore(0, pid, score)}
+          onFinishRound={startRound2}
           onResetTables={() => setActiveTab('ROUND1')}
           onUpdateParticipantTable={() => {}}
           isScoring={isScoring}
           setIsScoring={setIsScoring}
-          isEventFinished={activeEvent.status === EventStatus.RESULTS}
+          isEventFinished={false}
+        />
+      )}
+
+      {/* RONDE 2 */}
+      {activeTab === 'ROUND2' && activeEvent?.rounds[1]?.tables.length === 0 && (
+        <TableAssignmentView
+          participants={activeEvent.participants}
+          initialTables={[]}
+          onConfirm={(tables) => setRoundTables(1, tables)}
+          onUpdateParticipantGame={() => {}}
+          roundNumber={2}
+        />
+      )}
+
+      {activeTab === 'ROUND2' && activeEvent?.rounds[1]?.tables.length > 0 && (
+        <RoundView
+          round={activeEvent.rounds[1]}
+          participants={activeEvent.participants}
+          onScoreChange={(pid, score) => updateScore(1, pid, score)}
+          onFinishRound={finishEvent}
+          onResetTables={() => setActiveTab('ROUND2')}
+          onUpdateParticipantTable={() => {}}
+          isScoring={isScoring}
+          setIsScoring={setIsScoring}
+          isEventFinished={false}
         />
       )}
     </div>
