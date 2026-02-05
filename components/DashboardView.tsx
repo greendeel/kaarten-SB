@@ -36,7 +36,17 @@ const DashboardView: React.FC<DashboardViewProps> = ({
     <div className="max-w-3xl mx-auto p-6 space-y-10 pb-20">
 
       {/* NIEUWE KAARTMIDDAG */}
-      <div className="bg-white p-8 rounded-[3rem] border-4 border-blue-200 shadow-xl space-y-8">
+      <div className="bg-white p-8 rounded-[3rem] border-4 border-blue-200 shadow-xl space-y-8 relative overflow-hidden">
+        
+        {/* Logo rechtsboven */}
+        <div className="absolute top-6 right-6 md:top-8 md:right-8 w-32 md:w-44 opacity-90 pointer-events-none">
+          <img
+            src="/logo.jpg"
+            alt="Logo"
+            className="w-full h-auto object-contain"
+          />
+        </div>
+
         <div className="text-center space-y-4">
           <div className="inline-flex p-4 bg-blue-100 rounded-full text-blue-600">
             <PlusCircle size={48} />
