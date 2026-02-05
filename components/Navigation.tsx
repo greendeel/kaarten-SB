@@ -78,7 +78,7 @@ const Navigation: React.FC<NavigationProps> = ({
               onClick={() => onTabChange(tab.id)}
               className={`flex-1 min-w-[120px] py-3 flex flex-col items-center gap-1 border-b-4 transition-all ${
                 active 
-                ? 'border-blue-500 bg-slate-700 text-blue-400'   // 🔵 Actieve tab nu blauw
+                ? 'border-blue-500 bg-blue-600 text-white'  // ✅ Felblauw vakje + witte tekst
                 : locked 
                   ? 'border-transparent text-slate-600 opacity-50 cursor-not-allowed' 
                   : 'border-transparent text-slate-400 hover:bg-slate-700'
