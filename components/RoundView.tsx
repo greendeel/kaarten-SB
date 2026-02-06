@@ -1,6 +1,5 @@
-<h1 style={{color: 'red'}}>ROUNDVIEW ACTIEF</h1>
 import React from 'react';
-import { Round, Participant } from '../types';
+import { Round, Participant, GameType } from '../types';
 
 interface Props {
   round: Round;
@@ -27,10 +26,16 @@ const RoundView: React.FC<Props> = ({
   const getName = (id: string) =>
     participants.find(p => p.id === id)?.name || 'Onbekend';
 
+  const getGameStyle = (game: GameType) => {
+    return game === 'Jokeren'
+      ? { bg: 'bg-purple-50', text: 'text-purple-700' }
+      : { bg: 'bg-orange-50', text: 'text-orange-700' };
+  };
+
   return (
     <div className="p-4 max-w-7xl mx-auto space-y-8 pb-64">
 
-      {/* ================= TAFEL OVERZICHT ================= */}
+      {/* ================= TITELBALK (zelfde stijl als indelen) ================= */}
       {!isScoring && (
         <>
           <div className="bg-yellow-100 p-6 rounded-[2.5rem] border-4 border-yellow-400 text-center">
@@ -43,34 +48,38 @@ const RoundView: React.FC<Props> = ({
           </div>
 
           <div className="grid lg:grid-cols-2 gap-6">
-            {round.tables.map((table, index) => (
-              <div
-                key={table.id}
-                className="p-6 rounded-[2.5rem] border-4 bg-white space-y-4 shadow-md"
-              >
-                <div className="flex justify-between items-center border-b-2 border-slate-200 pb-3">
-                  <h3 className="text-2xl font-black uppercase text-slate-800">
-                    Tafel {index + 1}
-                  </h3>
-                  <span className="text-lg font-bold text-slate-500 uppercase">
-                    {table.game}
-                  </span>
-                </div>
+            {round.tables.map((table, index) => {
+              const style = getGameStyle(table.game);
 
-                <div className="grid gap-2">
-                  {table.participantIds.map(pid => (
-                    <div
-                      key={pid}
-                      className="bg-slate-100 p-3 rounded-2xl flex items-center justify-between border border-slate-100 shadow-sm"
-                    >
-                      <span className="text-2xl font-black text-slate-800 leading-none">
-                        {getName(pid)}
-                      </span>
-                    </div>
-                  ))}
+              return (
+                <div
+                  key={table.id}
+                  className={`p-6 rounded-[2.5rem] border-4 ${style.bg} space-y-4 shadow-md`}
+                >
+                  <div className="flex justify-between items-center border-b-2 border-slate-200 pb-3">
+                    <h3 className={`text-2xl font-black uppercase ${style.text}`}>
+                      {table.game}
+                    </h3>
+                    <span className="text-lg font-bold text-slate-500 uppercase">
+                      Tafel {index + 1}
+                    </span>
+                  </div>
+
+                  <div className="grid gap-2">
+                    {table.participantIds.map(pid => (
+                      <div
+                        key={pid}
+                        className="bg-white p-3 rounded-2xl flex items-center border border-slate-100 shadow-sm"
+                      >
+                        <span className="text-2xl font-black text-slate-800 leading-none">
+                          {getName(pid)}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="flex gap-4 justify-center pt-6">
