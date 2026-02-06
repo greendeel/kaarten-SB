@@ -84,7 +84,7 @@ const RoundView: React.FC<Props> = ({
           <div className="flex gap-4 justify-center pt-6">
             <button
               onClick={() => setIsScoring(true)}
-              className="w-full max-w-md py-8 rounded-[2rem] text-3xl font-black border-b-[10px] shadow-xl transition-all uppercase bg-green-600 border-green-900 text-white active:translate-y-1 active:border-b-4"
+              className="w-full max-w-md py-8 rounded-[2rem] text-3xl font-black border-b-[10px] shadow-xl uppercase bg-green-600 border-green-900 text-white active:translate-y-1 active:border-b-4"
             >
               SCORES INVULLEN
             </button>
@@ -99,7 +99,7 @@ const RoundView: React.FC<Props> = ({
         </>
       )}
 
-      {/* ================= SCORE INVOER PER TAFEL ================= */}
+      {/* ================= SCORE INVOER ================= */}
       {isScoring && (
         <>
           <div className="bg-green-100 p-6 rounded-[2.5rem] border-4 border-green-400 text-center">
@@ -144,11 +144,22 @@ const RoundView: React.FC<Props> = ({
                         </span>
 
                         <input
-                          type="number"
-                          step="1"
+                          type="text"
+                          inputMode="numeric"
                           className="w-20 h-20 text-center text-3xl font-black text-slate-900 rounded-xl border-4 border-slate-200 focus:border-green-500 outline-none bg-slate-50"
                           value={round.scores?.[pid] ?? ''}
-                          onChange={(e) => onScoreChange(pid, Number(e.target.value))}
+                          onChange={(e) => {
+                            const val = e.target.value.replace(',', '.');
+
+                            if (val === '' || val === '-') {
+                              onScoreChange(pid, 0);
+                              return;
+                            }
+
+                            if (/^-?\d+$/.test(val)) {
+                              onScoreChange(pid, Number(val));
+                            }
+                          }}
                         />
                       </div>
                     ))}
