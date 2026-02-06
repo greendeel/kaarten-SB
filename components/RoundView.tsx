@@ -6,7 +6,7 @@ interface RoundViewProps {
   round: Round;
   participants: Participant[];
   onScoreChange: (participantId: string, score: number) => void;
-  onConfirmRound?: () => void; // bestond al eerder in jouw versie
+  onConfirmRound?: () => void;
 }
 
 export default function RoundView({ round, participants, onScoreChange, onConfirmRound }: RoundViewProps) {
@@ -94,20 +94,19 @@ export default function RoundView({ round, participants, onScoreChange, onConfir
         })}
       </div>
 
-      {onConfirmRound && (
-        <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-slate-100 to-transparent z-50 pointer-events-none">
-          <div className="max-w-md mx-auto pointer-events-auto">
-            <button
-              onClick={onConfirmRound}
-              disabled={!allTablesValid}
-              className="w-full py-8 rounded-[2rem] text-3xl font-black border-b-[10px] shadow-xl transition-all uppercase flex items-center justify-center gap-4 bg-green-600 border-green-900 text-white active:translate-y-1 active:border-b-4 disabled:bg-slate-300 disabled:border-slate-400 disabled:text-slate-500 disabled:opacity-50"
-            >
-              {allTablesValid && <CheckCircle2 size={36} />}
-              VERDER NAAR RONDE 2
-            </button>
-          </div>
+      <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-slate-100 to-transparent z-50 pointer-events-none">
+        <div className="max-w-md mx-auto pointer-events-auto">
+          <button
+            onClick={() => onConfirmRound && onConfirmRound()}
+            disabled={!allTablesValid}
+            className="w-full py-8 rounded-[2rem] text-3xl font-black border-b-[10px] shadow-xl transition-all uppercase flex items-center justify-center gap-4 bg-green-600 border-green-900 text-white active:translate-y-1 active:border-b-4 disabled:bg-slate-300 disabled:border-slate-400 disabled:text-slate-500 disabled:opacity-50"
+          >
+            {allTablesValid && <CheckCircle2 size={36} />}
+            VERDER NAAR RONDE 2
+          </button>
         </div>
-      )}
+      </div>
+
     </div>
   );
 }
