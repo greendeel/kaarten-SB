@@ -26,18 +26,17 @@ const RoundView: React.FC<Props> = ({
   const getName = (id: string) =>
     participants.find(p => p.id === id)?.name || 'Onbekend';
 
-  const getGameStyle = (game: GameType) => {
-    return game === 'Jokeren'
-      ? { bg: 'bg-purple-50', text: 'text-purple-700' }
-      : { bg: 'bg-orange-50', text: 'text-orange-700' };
-  };
+  const getGameStyle = (game: GameType) =>
+    game === 'Jokeren'
+      ? { bg: 'bg-purple-50', title: 'text-purple-700' }
+      : { bg: 'bg-orange-50', title: 'text-orange-700' };
 
   return (
     <div className="p-4 max-w-7xl mx-auto space-y-8 pb-64">
 
-      {/* ================= TITELBALK (zelfde stijl als indelen) ================= */}
       {!isScoring && (
         <>
+          {/* Zelfde titelkaart */}
           <div className="bg-yellow-100 p-6 rounded-[2.5rem] border-4 border-yellow-400 text-center">
             <h2 className="text-3xl font-black text-slate-800 uppercase tracking-tight">
               Tafelindeling
@@ -57,7 +56,7 @@ const RoundView: React.FC<Props> = ({
                   className={`p-6 rounded-[2.5rem] border-4 ${style.bg} space-y-4 shadow-md`}
                 >
                   <div className="flex justify-between items-center border-b-2 border-slate-200 pb-3">
-                    <h3 className={`text-2xl font-black uppercase ${style.text}`}>
+                    <h3 className={`text-2xl font-black uppercase ${style.title}`}>
                       {table.game}
                     </h3>
                     <span className="text-lg font-bold text-slate-500 uppercase">
@@ -69,7 +68,7 @@ const RoundView: React.FC<Props> = ({
                     {table.participantIds.map(pid => (
                       <div
                         key={pid}
-                        className="bg-white p-3 rounded-2xl flex items-center border border-slate-100 shadow-sm"
+                        className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center"
                       >
                         <span className="text-2xl font-black text-slate-800 leading-none">
                           {getName(pid)}
@@ -85,9 +84,9 @@ const RoundView: React.FC<Props> = ({
           <div className="flex gap-4 justify-center pt-6">
             <button
               onClick={() => setIsScoring(true)}
-              className="py-8 px-12 rounded-[2rem] text-3xl font-black border-b-[10px] shadow-xl transition-all uppercase bg-green-600 border-green-900 text-white active:translate-y-1 active:border-b-4"
+              className="w-full max-w-md py-8 rounded-[2rem] text-3xl font-black border-b-[10px] shadow-xl transition-all uppercase flex items-center justify-center gap-4 bg-green-600 border-green-900 text-white active:translate-y-1 active:border-b-4"
             >
-              Scores invullen
+              SCORES INVULLEN
             </button>
 
             <button
@@ -100,7 +99,6 @@ const RoundView: React.FC<Props> = ({
         </>
       )}
 
-      {/* ================= SCORE INVOER ================= */}
       {isScoring && (
         <>
           <div className="bg-green-100 p-6 rounded-[2.5rem] border-4 border-green-400 text-center">
