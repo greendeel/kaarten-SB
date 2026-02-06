@@ -38,14 +38,14 @@ const Navigation: React.FC<NavigationProps> = ({
       <div className="flex items-center justify-between px-4 py-1.5 border-b border-slate-800">
         <button 
           onClick={onExit}
-          className="self-center flex items-center justify-center gap-0 bg-slate-800 hover:bg-slate-700 px-3 h-4 rounded-lg border border-slate-600 font-black transition-all active:scale-95 text-yellow-400 group cursor-pointer"
+          className="self-center flex items-center justify-center gap-1 bg-slate-800 hover:bg-slate-700 px-1 h-4 rounded-lg border border-slate-600 font-black transition-all active:scale-95 text-yellow-400 group cursor-pointer"
         >
           <ChevronLeft size={16} />
           <span className="text-base uppercase tracking-wider">Menu</span>
         </button>
 
         <h1 className="m-0 leading-none text-base font-black uppercase tracking-tight truncate px-3 text-white max-w-[60%] text-center">
-          {title || "Kaartavond"}
+          {title || "Kaartmiddag"}
         </h1>
 
         <div className="w-16" />
