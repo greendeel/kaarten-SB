@@ -32,16 +32,16 @@ const Navigation: React.FC<NavigationProps> = ({
   };
 
   return (
-    <nav className="sticky top-0 z-[999] bg-slate-900 text-white shadow-xl print:hidden">
+    <nav className="sticky top-0 z-[999] bg-slate-800 text-white shadow-lg print:hidden">
       
       {/* Bovenbalk */}
       <div className="flex items-center justify-between px-4 py-1.5 border-b border-slate-800">
         <button 
           onClick={onExit}
-          className="self-center flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 px-3 h-9 rounded-lg border border-slate-600 font-black transition-all active:scale-95 text-yellow-400 group cursor-pointer"
+          className="self-center flex items-center gap-2 bg-slate-800/70 hover:bg-slate-700/80 px-3 py-1 rounded-lg border border-slate-600 font-black leading-none transition-all active:scale-95 text-yellow-400 group cursor-pointer"
         >
           <ChevronLeft size={16} />
-          <span className="text-base uppercase tracking-wider">Menu</span>
+          <span className="uppercase tracking-wider">Menu</span>
         </button>
 
         <h1 className="m-0 leading-none text-base font-black uppercase tracking-tight truncate px-3 text-white max-w-[60%] text-center">
