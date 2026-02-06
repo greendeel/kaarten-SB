@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Round, Participant } from '../types';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, CheckCircle2 } from 'lucide-react';
 
 interface RoundViewProps {
   round: Round;
@@ -58,6 +58,10 @@ export default function RoundView({
 
   const buttonText = round.number === 1 ? 'VERDER NAAR RONDE 2' : 'NAAR EINDUITSLAG';
 
+  const jokerenTables = round.tables.filter(t => t.game === 'Jokeren');
+  const rikkenTables = round.tables.filter(t => t.game === 'Rikken');
+  const sideBySide = jokerenTables.length === 1 && rikkenTables.length === 1;
+
   return (
     <div className="p-4 max-w-7xl mx-auto space-y-8 pb-56">
 
@@ -70,7 +74,7 @@ export default function RoundView({
         </p>
       </div>
 
-      <div className="grid gap-6">
+      <div className={`grid gap-6 ${sideBySide ? 'lg:grid-cols-2' : ''}`}>
         {round.tables.map(table => {
           const tablePlayers = getParticipantsForTable(table.participantIds);
           const isJokeren = table.game === 'Jokeren';
@@ -127,18 +131,18 @@ export default function RoundView({
         })}
       </div>
 
-      {allValid && (
-        <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-slate-100 to-transparent z-50 pointer-events-none">
-          <div className="max-w-md mx-auto pointer-events-auto">
-            <button
-              onClick={onFinishRound}
-              className="w-full py-6 rounded-[2rem] text-2xl font-black border-b-[8px] shadow-xl transition-all uppercase flex items-center justify-center bg-green-600 border-green-900 text-white active:translate-y-1 active:border-b-4"
-            >
-              {buttonText}
-            </button>
-          </div>
+      <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-slate-100 to-transparent z-50 pointer-events-none">
+        <div className="max-w-md mx-auto pointer-events-auto">
+          <button
+            onClick={onFinishRound}
+            disabled={!allValid}
+            className="w-full py-6 rounded-[2rem] text-2xl font-black border-b-[8px] shadow-xl transition-all uppercase flex items-center justify-center gap-3 bg-green-600 border-green-900 text-white active:translate-y-1 active:border-b-4 disabled:bg-slate-300 disabled:border-slate-400 disabled:text-slate-500 disabled:opacity-50"
+          >
+            {allValid && <CheckCircle2 size={28} />}
+            {buttonText}
+          </button>
         </div>
-      )}
+      </div>
 
     </div>
   );
