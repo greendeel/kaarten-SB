@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Round, Participant } from '../types';
-import { CheckCircle2, AlertCircle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 
 interface RoundViewProps {
   round: Round;
@@ -84,7 +84,7 @@ export default function RoundView({ round, participants, onScoreChange, onConfir
               <div className={`p-3 rounded-xl border-2 flex items-center gap-3 ${
                 sum === 0 ? 'bg-green-50 border-green-500 text-green-700' : 'bg-red-50 border-red-500 text-red-700'
               }`}>
-                {sum === 0 ? <CheckCircle2 size={24} /> : <AlertCircle size={24} />}
+                <AlertCircle size={24} />
                 <span className="text-lg font-black">
                   Totaal tafel = {sum}
                 </span>
@@ -99,9 +99,8 @@ export default function RoundView({ round, participants, onScoreChange, onConfir
           <button
             onClick={() => onConfirmRound && onConfirmRound()}
             disabled={!allTablesValid}
-            className="w-full py-8 rounded-[2rem] text-3xl font-black border-b-[10px] shadow-xl transition-all uppercase flex items-center justify-center gap-4 bg-green-600 border-green-900 text-white active:translate-y-1 active:border-b-4 disabled:bg-slate-300 disabled:border-slate-400 disabled:text-slate-500 disabled:opacity-50"
+            className="w-full py-8 rounded-[2rem] text-3xl font-black border-b-[8px] shadow-xl transition-all uppercase flex items-center justify-center bg-green-600 border-green-900 text-white active:translate-y-1 active:border-b-4 disabled:bg-slate-300 disabled:border-slate-400 disabled:text-slate-500 disabled:opacity-50"
           >
-            {allTablesValid && <CheckCircle2 size={36} />}
             VERDER NAAR RONDE 2
           </button>
         </div>
