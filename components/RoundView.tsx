@@ -32,7 +32,6 @@ export default function RoundView({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (isEventFinished) return;
-
     if (e.key === 'Enter') {
       e.preventDefault();
       const inputs = Array.from(document.querySelectorAll('input[type="number"]')) as HTMLInputElement[];
@@ -60,7 +59,6 @@ export default function RoundView({
 
   const allTablesZero = round.tables.every(t => getTableSum(t.participantIds) === 0);
   const allValid = allScoresFilled && allTablesZero;
-
   const buttonText = round.number === 1 ? 'VERDER NAAR RONDE 2' : 'NAAR EINDUITSLAG';
 
   const jokerenTables = round.tables.filter(t => t.game === 'Jokeren');
@@ -86,12 +84,7 @@ export default function RoundView({
           const sum = getTableSum(table.participantIds);
 
           return (
-            <div
-              key={table.id}
-              className={`p-6 rounded-[2.5rem] border-4 shadow-md space-y-4 ${
-                isJokeren ? 'bg-purple-50 border-purple-200' : 'bg-orange-50 border-orange-200'
-              }`}
-            >
+            <div key={table.id} className={`p-6 rounded-[2.5rem] border-4 shadow-md space-y-4 ${isJokeren ? 'bg-purple-50 border-purple-200' : 'bg-orange-50 border-orange-200'}`}>
               <div className="flex justify-between items-center border-b-2 border-slate-200 pb-3">
                 <h3 className={`text-2xl font-black uppercase ${isJokeren ? 'text-purple-700' : 'text-orange-700'}`}>
                   {table.game} – Tafel
@@ -103,14 +96,8 @@ export default function RoundView({
 
               <div className="grid gap-2">
                 {tablePlayers.map(player => (
-                  <div
-                    key={player.id}
-                    className="bg-white p-3 rounded-2xl flex items-center justify-between border border-slate-100 shadow-sm gap-3"
-                  >
-                    <span className="text-2xl font-black text-slate-800 leading-none">
-                      {player.name}
-                    </span>
-
+                  <div key={player.id} className="bg-white p-2 rounded-2xl flex items-center justify-between border border-slate-100 shadow-sm gap-3">
+                    <span className="text-2xl font-black text-slate-800 leading-none">{player.name}</span>
                     <input
                       type="number"
                       inputMode="numeric"
@@ -128,13 +115,9 @@ export default function RoundView({
                 ))}
               </div>
 
-              <div className={`p-3 rounded-xl border-2 flex items-center gap-3 ${
-                sum === 0 ? 'bg-green-50 border-green-500 text-green-700' : 'bg-red-50 border-red-500 text-red-700'
-              }`}>
+              <div className={`p-3 rounded-xl border-2 flex items-center gap-3 ${sum === 0 ? 'bg-green-50 border-green-500 text-green-700' : 'bg-red-50 border-red-500 text-red-700'}`}>
                 <AlertCircle size={24} />
-                <span className="text-lg font-black">
-                  Totaal tafel = {sum}
-                </span>
+                <span className="text-lg font-black">Totaal tafel = {sum}</span>
               </div>
             </div>
           );
