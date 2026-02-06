@@ -1,68 +1,85 @@
 import React from 'react';
+import { EventStatus } from '../types';
+import { Users, Play, Trophy, ChevronLeft } from 'lucide-react';
 
 interface NavigationProps {
-  currentView: string;
-  onNavigate: (view: string) => void;
+  currentStatus: EventStatus;
+  activeTab: string;
+  onTabChange: (tab: string) => void;
+  onExit: () => void;
+  title: string;
 }
 
-export default function Navigation({ currentView, onNavigate }: NavigationProps) {
+const Navigation: React.FC<NavigationProps> = ({ 
+  currentStatus, 
+  activeTab, 
+  onTabChange, 
+  onExit, 
+  title
+}) => {
+  const tabs = [
+    { id: 'REGISTRATION', label: 'Deelnemers', icon: Users },
+    { id: 'ROUND1', label: 'Ronde 1', icon: Play },
+    { id: 'ROUND2', label: 'Ronde 2', icon: Play },
+    { id: 'RESULTS', label: 'Uitslag', icon: Trophy },
+  ];
+
+  const isLocked = (status: string) => {
+    const order = ['REGISTRATION', 'ROUND1', 'ROUND2', 'RESULTS'];
+    const currentOrder = order.indexOf(currentStatus);
+    const tabOrder = order.indexOf(status);
+    return tabOrder > currentOrder;
+  };
+
   return (
-    <div className="w-full bg-gray-800 text-white">
-
-      {/* 🔽 BOVENSTE BALK — 25% MINDER HOOG (alleen padding aangepast) */}
-      <div className="flex items-center justify-between px-4 py-3">
-        <button
-          onClick={() => onNavigate('dashboard')}
-          className="text-xl font-bold"
+    <nav className="sticky top-0 z-[999] bg-slate-900 text-white shadow-xl print:hidden">
+      
+      {/* Bovenbalk */}
+      <div className="flex items-center justify-between px-4 py-2 border-b-2 border-slate-950">
+        <button 
+          onClick={onExit}
+          className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 px-3 py-2 rounded-xl border-2 border-slate-600 font-black transition-all active:scale-95 text-yellow-400 group cursor-pointer"
         >
-          ☰ Menu
+          <ChevronLeft size={16} />
+          <span className="text-base uppercase tracking-wider">Menu</span>
         </button>
 
-        <div className="text-lg font-semibold">
-          Kaartmiddag
-        </div>
+        <h1 className="text-base font-black uppercase tracking-tight truncate px-3 text-white max-w-[60%] text-center">
+          {title || "Kaartavond"}
+        </h1>
 
-        <div className="w-10" /> {/* spacer zodat titel gecentreerd blijft */}
+        {/* lege ruimte zodat titel mooi gecentreerd blijft */}
+        <div className="w-16" />
       </div>
 
-      {/* ONDERSTE TAB-NAVIGATIE (ONGEWIJZIGD) */}
-      <div className="flex justify-around bg-gray-700 py-2 text-sm">
-        <button
-          onClick={() => onNavigate('registration')}
-          className={`px-3 py-2 rounded ${
-            currentView === 'registration' ? 'bg-green-600' : 'bg-gray-600'
-          }`}
-        >
-          Deelnemers
-        </button>
+      {/* Tabs */}
+      <div className="flex bg-slate-800 overflow-x-auto no-scrollbar px-2 py-0.5 gap-1">
+        {tabs.map((tab) => {
+          const Icon = tab.icon;
+          const locked = isLocked(tab.id);
+          const active = activeTab === tab.id;
 
-        <button
-          onClick={() => onNavigate('tables')}
-          className={`px-3 py-2 rounded ${
-            currentView === 'tables' ? 'bg-green-600' : 'bg-gray-600'
-          }`}
-        >
-          Tafels
-        </button>
-
-        <button
-          onClick={() => onNavigate('rounds')}
-          className={`px-3 py-2 rounded ${
-            currentView === 'rounds' ? 'bg-green-600' : 'bg-gray-600'
-          }`}
-        >
-          Scores
-        </button>
-
-        <button
-          onClick={() => onNavigate('results')}
-          className={`px-3 py-2 rounded ${
-            currentView === 'results' ? 'bg-green-600' : 'bg-gray-600'
-          }`}
-        >
-          Uitslag
-        </button>
+          return (
+            <button
+              key={tab.id}
+              disabled={locked}
+              onClick={() => onTabChange(tab.id)}
+              className={`flex-1 min-w-[120px] py-2 flex flex-col items-center gap-1 border-b-4 rounded-xl border-black transition-all ${
+                active 
+                  ? 'border-yellow-400 bg-blue-600 text-white'
+                  : locked 
+                    ? 'border-slate-600 text-slate-600 opacity-50 cursor-not-allowed bg-slate-800'
+                    : 'border-slate-500 text-slate-400 hover:bg-slate-700 bg-slate-800'
+              }`}
+            >
+              <Icon size={22} />
+              <span className="text-sm font-black uppercase tracking-tighter">{tab.label}</span>
+            </button>
+          );
+        })}
       </div>
-    </div>
+    </nav>
   );
-}
+};
+
+export default Navigation;
