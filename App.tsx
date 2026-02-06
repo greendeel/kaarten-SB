@@ -111,18 +111,17 @@ const App: React.FC = () => {
     setIsScoring(false);
   };
 
+  // Tafels opslaan maar NIET automatisch naar scoremodus
   const setRoundTables = async (roundIndex: number, tables: Table[]) => {
-  if (!activeEvent) return;
+    if (!activeEvent) return;
 
-  const updatedRounds = [...activeEvent.rounds];
-  updatedRounds[roundIndex] = { ...updatedRounds[roundIndex], tables };
+    const updatedRounds = [...activeEvent.rounds];
+    updatedRounds[roundIndex] = { ...updatedRounds[roundIndex], tables };
 
-  await updateEvent({ ...activeEvent, rounds: updatedRounds });
+    await updateEvent({ ...activeEvent, rounds: updatedRounds });
 
-  // Niet automatisch naar scoremodus
-  setIsScoring(false);
-};
-
+    setIsScoring(false);
+  };
 
   const updateScore = async (roundIndex: number, pid: string, score: number) => {
     if (!activeEvent) return;
