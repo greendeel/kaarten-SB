@@ -10,7 +10,6 @@ import LoginView from './components/LoginView';
 import { getEvents, saveEvent, deleteEvent as deleteEventFromDB, generateId } from './services/storage';
 import { supabase } from './services/supabaseClient';
 
-
 const CLUB_CODE = '26091976';
 
 const App: React.FC = () => {
@@ -40,6 +39,7 @@ const App: React.FC = () => {
   };
 
   const activeEvent = events.find(e => e.id === activeEventId) || null;
+  const isFinished = activeEvent?.status === EventStatus.RESULTS;
 
   const createEvent = async (title: string) => {
     const newEvent: CardEvent = {
@@ -62,17 +62,17 @@ const App: React.FC = () => {
   };
 
   const addParticipant = async (name: string, game: GameType) => {
-    if (!activeEvent) return;
+    if (!activeEvent || isFinished) return;
     await updateEvent({ ...activeEvent, participants: [...activeEvent.participants, { id: generateId(), name, game }] });
   };
 
   const removeParticipant = async (id: string) => {
-    if (!activeEvent) return;
+    if (!activeEvent || isFinished) return;
     await updateEvent({ ...activeEvent, participants: activeEvent.participants.filter(p => p.id !== id) });
   };
 
   const updateParticipantGame = async (id: string, newGame: GameType) => {
-    if (!activeEvent) return;
+    if (!activeEvent || isFinished) return;
     await updateEvent({
       ...activeEvent,
       participants: activeEvent.participants.map(p =>
@@ -82,13 +82,13 @@ const App: React.FC = () => {
   };
 
   const startRound1 = async () => {
-    if (!activeEvent) return;
+    if (!activeEvent || isFinished) return;
     await updateEvent({ ...activeEvent, status: EventStatus.ROUND1, rounds: [{ number: 1, tables: [], scores: {} }] });
     setActiveTab('ROUND1');
   };
 
   const startRound2 = async () => {
-    if (!activeEvent) return;
+    if (!activeEvent || isFinished) return;
     const updatedRounds = [...activeEvent.rounds, { number: 2, tables: [], scores: {} }];
     await updateEvent({ ...activeEvent, status: EventStatus.ROUND2, rounds: updatedRounds });
     setActiveTab('ROUND2');
@@ -96,7 +96,7 @@ const App: React.FC = () => {
   };
 
   const setRoundTables = async (roundIndex: number, tables: Table[]) => {
-    if (!activeEvent) return;
+    if (!activeEvent || isFinished) return;
     const updatedRounds = [...activeEvent.rounds];
     updatedRounds[roundIndex] = { ...updatedRounds[roundIndex], tables };
     await updateEvent({ ...activeEvent, rounds: updatedRounds });
@@ -104,7 +104,7 @@ const App: React.FC = () => {
   };
 
   const updateScore = async (roundIndex: number, pid: string, score: number) => {
-    if (!activeEvent) return;
+    if (!activeEvent || isFinished) return;
     const updatedRounds = [...activeEvent.rounds];
     const currentRound = { ...updatedRounds[roundIndex] };
     currentRound.scores = { ...currentRound.scores, [pid]: score };
@@ -147,7 +147,7 @@ const App: React.FC = () => {
     );
   }
 
-  if (!activeEvent) return null; // voorkomt crash tijdens laden
+  if (!activeEvent) return null;
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-100">
@@ -167,7 +167,7 @@ const App: React.FC = () => {
           onRemoveParticipant={removeParticipant}
           onUpdateParticipantGame={updateParticipantGame}
           onStartRound={startRound1}
-          isLocked={false}
+          isLocked={isFinished}
         />
       )}
 
@@ -187,16 +187,11 @@ const App: React.FC = () => {
           participants={activeEvent.participants}
           onScoreChange={(pid, score) => updateScore(0, pid, score)}
           onFinishRound={startRound2}
-          onResetTables={() => {
-            const updatedRounds = [...activeEvent.rounds];
-            updatedRounds[0] = { ...updatedRounds[0], tables: [] };
-            updateEvent({ ...activeEvent, rounds: updatedRounds });
-            setIsScoring(false);
-          }}
+          onResetTables={() => {}}
           onUpdateParticipantTable={() => {}}
           isScoring={isScoring}
           setIsScoring={setIsScoring}
-          isEventFinished={false}
+          isEventFinished={isFinished}
         />
       )}
 
@@ -216,16 +211,11 @@ const App: React.FC = () => {
           participants={activeEvent.participants}
           onScoreChange={(pid, score) => updateScore(1, pid, score)}
           onFinishRound={finishEvent}
-          onResetTables={() => {
-            const updatedRounds = [...activeEvent.rounds];
-            updatedRounds[1] = { ...updatedRounds[1], tables: [] };
-            updateEvent({ ...activeEvent, rounds: updatedRounds });
-            setIsScoring(false);
-          }}
+          onResetTables={() => {}}
           onUpdateParticipantTable={() => {}}
           isScoring={isScoring}
           setIsScoring={setIsScoring}
-          isEventFinished={false}
+          isEventFinished={isFinished}
         />
       )}
 
