@@ -71,12 +71,6 @@ const App: React.FC = () => {
     }
   };
 
-  // 🆕 Titel wijzigen
-  const renameEvent = async (newTitle: string) => {
-    if (!activeEvent) return;
-    await updateEvent({ ...activeEvent, title: newTitle });
-  };
-
   const deleteEvent = async (id: string) => {
     if (!confirm('Wilt u deze middag definitief verwijderen?')) return;
     await deleteEventFromDB(id);
@@ -106,6 +100,7 @@ const App: React.FC = () => {
     if (!activeEvent) return;
     await updateEvent({ ...activeEvent, status: EventStatus.ROUND1, rounds: [{ number: 1, tables: [], scores: {} }] });
     setActiveTab('ROUND1');
+    setIsScoring(false);
   };
 
   const startRound2 = async () => {
@@ -116,11 +111,16 @@ const App: React.FC = () => {
     setIsScoring(false);
   };
 
+  // ✅ FIX: na bevestigen tafels automatisch scoremodus aan
   const setRoundTables = async (roundIndex: number, tables: Table[]) => {
     if (!activeEvent) return;
+
     const updatedRounds = [...activeEvent.rounds];
     updatedRounds[roundIndex] = { ...updatedRounds[roundIndex], tables };
+
     await updateEvent({ ...activeEvent, rounds: updatedRounds });
+
+    setIsScoring(true);
   };
 
   const updateScore = async (roundIndex: number, pid: string, score: number) => {
@@ -183,7 +183,6 @@ const App: React.FC = () => {
         onTabChange={setActiveTab}
         onExit={() => setActiveEventId(null)}
         title={activeEvent.title}
-        onRename={renameEvent}   // 🆕
       />
 
       {activeTab === 'REGISTRATION' && (
