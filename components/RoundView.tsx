@@ -42,6 +42,11 @@ const RoundView: React.FC<Props> = ({
   return (
     <div className="p-4 max-w-7xl mx-auto space-y-8 pb-64">
 
+      {/* 🔴 TESTBALK — MOET ZICHTBAAR ZIJN */}
+      <div style={{ background: 'red', color: 'white', padding: 10, fontWeight: 'bold', textAlign: 'center' }}>
+        ROUNDVIEW NIEUWE VERSIE
+      </div>
+
       {/* ================= TAFEL OVERZICHT ================= */}
       {!isScoring && (
         <>
