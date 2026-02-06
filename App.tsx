@@ -111,17 +111,18 @@ const App: React.FC = () => {
     setIsScoring(false);
   };
 
-  // ✅ FIX: na bevestigen tafels automatisch scoremodus aan
   const setRoundTables = async (roundIndex: number, tables: Table[]) => {
-    if (!activeEvent) return;
+  if (!activeEvent) return;
 
-    const updatedRounds = [...activeEvent.rounds];
-    updatedRounds[roundIndex] = { ...updatedRounds[roundIndex], tables };
+  const updatedRounds = [...activeEvent.rounds];
+  updatedRounds[roundIndex] = { ...updatedRounds[roundIndex], tables };
 
-    await updateEvent({ ...activeEvent, rounds: updatedRounds });
+  await updateEvent({ ...activeEvent, rounds: updatedRounds });
 
-    setIsScoring(true);
-  };
+  // Niet automatisch naar scoremodus
+  setIsScoring(false);
+};
+
 
   const updateScore = async (roundIndex: number, pid: string, score: number) => {
     if (!activeEvent) return;
