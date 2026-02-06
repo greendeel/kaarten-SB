@@ -42,6 +42,7 @@ const RoundView: React.FC<Props> = ({
   return (
     <div className="p-4 max-w-7xl mx-auto space-y-8 pb-64">
 
+      {/* ================= TAFEL OVERZICHT ================= */}
       {!isScoring && (
         <>
           <div className="bg-yellow-100 p-6 rounded-[2.5rem] border-4 border-yellow-400 text-center">
@@ -106,6 +107,7 @@ const RoundView: React.FC<Props> = ({
         </>
       )}
 
+      {/* ================= SCORE INVOER ================= */}
       {isScoring && (
         <>
           <div className="bg-green-100 p-6 rounded-[2.5rem] border-4 border-green-400 text-center">
@@ -117,11 +119,11 @@ const RoundView: React.FC<Props> = ({
             </p>
           </div>
 
-          <div className="grid gap-4">
+          <div className="grid gap-6 max-w-3xl mx-auto">
             {participants.map(p => (
               <div
                 key={p.id}
-                className="bg-white p-5 rounded-[2rem] border-4 border-slate-100 shadow-md flex items-center justify-between"
+                className="bg-white p-6 rounded-[2.5rem] border-4 border-slate-200 shadow-md flex items-center justify-between"
               >
                 <span className="text-3xl font-black text-slate-800">
                   {p.name}
@@ -130,7 +132,7 @@ const RoundView: React.FC<Props> = ({
                 <input
                   type="number"
                   inputMode="numeric"
-                  className="w-28 h-20 text-center text-4xl font-black text-slate-900 rounded-2xl border-4 border-slate-200 focus:border-green-500 outline-none bg-slate-50"
+                  className="w-24 h-24 text-center text-4xl font-black text-slate-900 rounded-2xl border-4 border-slate-200 focus:border-green-500 outline-none bg-slate-50 shadow-inner"
                   value={round.scores?.[p.id] ?? ''}
                   onChange={(e) => onScoreChange(p.id, Number(e.target.value))}
                 />
@@ -138,17 +140,17 @@ const RoundView: React.FC<Props> = ({
             ))}
           </div>
 
-          <div className="flex gap-6 justify-center pt-8">
+          <div className="flex gap-6 justify-center pt-10">
             <button
               onClick={() => setIsScoring(false)}
-              className="py-5 px-8 rounded-[1.5rem] text-xl font-black bg-slate-400 text-white shadow-md"
+              className="py-5 px-10 rounded-[2rem] text-xl font-black bg-slate-400 text-white shadow-md"
             >
               Terug naar tafels
             </button>
 
             <button
               onClick={onFinishRound}
-              className="py-5 px-8 rounded-[1.5rem] text-xl font-black bg-green-600 text-white border-b-[6px] border-green-900 shadow-lg active:translate-y-1 active:border-b-2"
+              className="py-5 px-10 rounded-[2rem] text-xl font-black bg-green-600 text-white border-b-[8px] border-green-900 shadow-lg active:translate-y-1 active:border-b-4"
             >
               Ronde afronden
             </button>
