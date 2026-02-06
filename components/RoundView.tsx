@@ -29,20 +29,26 @@ const RoundView: React.FC<Props> = ({
   return (
     <div className="p-4">
 
-      {/* ================= ORIGINELE TAFEL OVERZICHT ================= */}
+      {/* ================= TAFEL OVERZICHT (zelfde structuur als indelen) ================= */}
       {!isScoring && (
         <>
           <h2 className="text-xl font-bold mb-4">Tafelindeling</h2>
 
-          <div className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2">
             {round.tables.map((table, index) => (
-              <div key={index} className="bg-white rounded-lg shadow p-4">
-                <h3 className="font-semibold mb-2">Tafel {index + 1}</h3>
-                <ul className="space-y-1">
+              <div key={index} className="bg-white rounded-xl shadow p-4">
+                <h3 className="font-bold mb-3">Tafel {index + 1}</h3>
+
+                <div className="space-y-2">
                   {table.playerIds.map((pid: string) => (
-                    <li key={pid}>{getName(pid)}</li>
+                    <div
+                      key={pid}
+                      className="bg-slate-100 rounded-lg px-3 py-2"
+                    >
+                      {getName(pid)}
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             ))}
           </div>
@@ -50,14 +56,14 @@ const RoundView: React.FC<Props> = ({
           <div className="mt-6 flex gap-4">
             <button
               onClick={() => setIsScoring(true)}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl text-lg"
             >
               Scores invullen
             </button>
 
             <button
               onClick={onResetTables}
-              className="text-sm text-slate-600 underline"
+              className="text-slate-600 underline"
             >
               Tafels opnieuw indelen
             </button>
@@ -65,7 +71,7 @@ const RoundView: React.FC<Props> = ({
         </>
       )}
 
-      {/* ================= ORIGINELE SCORE INVOER UI ================= */}
+      {/* ================= SCORE INVOER (ORIGINELE UI ONGEWIJZIGD) ================= */}
       {isScoring && (
         <>
           <h2 className="text-xl font-bold mb-4">Scores invoeren</h2>
