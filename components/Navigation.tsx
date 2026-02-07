@@ -11,12 +11,13 @@ interface NavigationProps {
 }
 
 const Navigation: React.FC<NavigationProps> = ({ 
-  currentStatus, 
+  currentStatus = 'REGISTRATION', 
   activeTab, 
   onTabChange, 
   onExit, 
   title
 }) => {
+
   const tabs = [
     { id: 'REGISTRATION', label: 'Deelnemers', icon: Users },
     { id: 'ROUND1', label: 'Ronde 1', icon: Play },
