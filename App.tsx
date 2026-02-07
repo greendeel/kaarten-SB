@@ -147,7 +147,13 @@ const App: React.FC = () => {
     );
   }
 
-  if (!activeEvent) return null;
+  if (!activeEvent) {
+  return (
+    <div className="min-h-screen flex items-center justify-center text-xl font-bold text-slate-600">
+      Middag laden...
+    </div>
+  );
+}
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-100">
